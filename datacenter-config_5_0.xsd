@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:grothetech:datacenter-config:5" targetNamespace="urn:grothetech:datacenter-config:5" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="types/datacenter_3_1.xsd" />
+    
+    <xs:complexType name="datacenter-configuration_type">
+        <xs:sequence>
+            <xs:element name="jboss-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="jdk6_32-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="jdk6_64-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="jdk7_32-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="jdk7_64-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="active-jdk" type="active-jdk_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="vault-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="heap-dump-location" type="location_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="vm-args" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ldap-security" type="ldap-security_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ssl-keystore" type="ssl-keystore_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="messaging" type="messaging_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="http-frontends" type="http-frontend-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="role-assignments" type="role-assignment-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="environments" type="datacenter-environment-set_type" minOccurs="0" maxOccurs="1"  />
+            <xs:element name="port-sets" type="port-set-list_type" minOccurs="1" maxOccurs="1"  />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="datacenter-config" type="datacenter-configuration_type" />
+
+</xs:schema>

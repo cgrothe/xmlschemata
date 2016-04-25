@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="common_1_0.xsd" />
+    <xs:include schemaLocation="datasources_2_0.xsd" />
+    <xs:include schemaLocation="caches_1_0.xsd" />
+    <xs:include schemaLocation="web-connectors_1_2.xsd" />
+    <xs:include schemaLocation="security-domains_2_0.xsd" />
+    <xs:include schemaLocation="thread-pools_1_0.xsd" />
+    
+    <xs:complexType name="http-load-balancing_type">
+        <xs:attribute name="enabled" type="xs:boolean" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="logging-configuration_type">
+        <xs:attribute name="default-server-loglevel" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="jms-queue_type">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="jndi-name" type="xs:string" use="required" />
+    </xs:complexType>
+    
+    <xs:complexType name="jms-queue-list_type">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element name="jms-queue" type="jms-queue_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:group name="common-memory-settings_group">
+        <xs:sequence>
+            <xs:element name="xms" type="xs:string" minOccurs="0" maxOccurs="1"  />
+            <xs:element name="xss" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="perm-size" type="xs:string" minOccurs="0" maxOccurs="1"  />
+        </xs:sequence>
+    </xs:group>
+    
+    <xs:complexType name="complete-memory-settings_type">
+        <xs:sequence>
+          <xs:element name="xmx" type="xs:string" minOccurs="1" maxOccurs="1"  />
+          <xs:element name="max-perm-size" type="xs:string" maxOccurs="1" minOccurs="1" />
+          <xs:group ref="common-memory-settings_group" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="incomplete-memory-settings_type">
+        <xs:sequence>
+          <xs:element name="xmx" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="max-perm-size" type="xs:string"  minOccurs="0" maxOccurs="1" />
+          <xs:group ref="common-memory-settings_group" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="common-process_type" abstract="true">
+        <xs:sequence minOccurs="1" maxOccurs="1">
+            <xs:element name="active-jdk" type="active-jdk_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="memory-settings" type="incomplete-memory-settings_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="additional-vm-args" type="xs:string"  minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string" use="required" />
+        <xs:attribute name="name" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <xs:group name="common-production-configuration_group">
+        <xs:sequence>
+            <xs:element name="logging" type="logging-configuration_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="http-load-balancing" type="http-load-balancing_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="web-connectors" type="web-connector-list_type" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="security-domains" type="security-domain-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="local-caches" type="local-cache-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="replicated-caches" type="replicated-cache-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jms-queues" type="jms-queue-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="thread-pools" type="thread-pool-list_type" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:group>
+        
+    <xs:complexType name="incomplete-process_type">
+        <xs:complexContent>
+            <xs:extension base="common-process_type">
+              <xs:sequence>
+                  <xs:element name="datasources" type="incomplete-datasource-list_type" maxOccurs="1" minOccurs="0" />
+                  <xs:group ref="common-production-configuration_group" />
+              </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="complete-process_type">
+        <xs:complexContent>
+            <xs:extension base="common-process_type">
+              <xs:sequence>
+                  <xs:element name="datasources" type="complete-datasource-list_type" maxOccurs="1" minOccurs="0" />
+                  <xs:group ref="common-production-configuration_group" />
+              </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="incomplete-process-list_type">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element name="process" type="incomplete-process_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="complete-process-list_type">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element name="process" type="complete-process_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

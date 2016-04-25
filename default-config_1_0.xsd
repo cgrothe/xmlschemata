@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:grothetech:default-config:1" targetNamespace="urn:grothetech:default-config:1"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="types/datasources_1_0.xsd" />
+    <xs:include schemaLocation="types/caches_1_0.xsd" />
+    <xs:include schemaLocation="types/web-connectors_1_0.xsd" />
+    <xs:include schemaLocation="types/security-domains_1_0.xsd" />
+
+    <xs:complexType name="default-config_type">
+        <xs:all minOccurs="0">
+            <xs:element name="default-datasources" type="incomplete-datasource-list_type" minOccurs="0" />
+            <xs:element name="default-local-cache" type="local-cache_type" minOccurs="0" />
+            <xs:element name="default-replicated-cache" type="replicated-cache_type" minOccurs="0" />
+            <xs:element name="default-web-connector" type="web-connector_type" minOccurs="0" />
+            <xs:element name="default-security-domain" type="security-domain_type" minOccurs="0"/>
+            <xs:element name="default-ldap-login-module" type="login-module_type" minOccurs="0" />
+            <xs:element name="default-file-login-module" type="file-login-module_type" minOccurs="0" />
+            <xs:element name="default-tools-login-module" type="login-module_type" minOccurs="0" />
+            <xs:element name="default-sec-jpa-login-module" type="sec-login-module_type" minOccurs="0" />
+            <xs:element name="default-sec-file-login-module" type="sec-login-module_type" minOccurs="0" />
+        </xs:all>
+    </xs:complexType>
+
+    <xs:element name="default-config" type="default-config_type" />
+
+</xs:schema>

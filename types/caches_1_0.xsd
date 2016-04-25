@@ -1,0 +1,86 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:complexType name="local-cache_type">
+        <xs:sequence>
+            <xs:element name="regions" type="region-list_type" minOccurs="1" maxOccurs="1" />
+            <xs:element name="wake-up-interval" type="xs:long" minOccurs="0" />
+            <xs:element name="lock-aquisition-timeout" type="xs:long" minOccurs="0" />
+            <xs:element name="isolation-level" type="isolation-level_type" minOccurs="0" />
+            <xs:element name="locking-mode" type="locking-mode_type" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:token" />
+        <xs:attribute name="start" use="optional" type="cache-start_type" />
+    </xs:complexType>
+
+    <xs:complexType name="local-cache-list_type">
+        <xs:sequence>
+            <xs:element name="local-cache" type="local-cache_type" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="replicated-cache_type">
+        <xs:complexContent>
+            <xs:extension base="local-cache_type">
+                <xs:sequence>
+                    <xs:element name="caching-mode" type="caching-mode_type" minOccurs="0" />
+                    <xs:element name="initial-state-retrieval-timeout" type="xs:long" minOccurs="0" />
+                    <xs:element name="replication-timeout" type="xs:long" minOccurs="0" />
+                </xs:sequence>
+                <xs:attribute name="jgroups-stack" type="xs:token" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="replicated-cache-list_type">
+        <xs:sequence>
+            <xs:element name="replicated-cache" type="replicated-cache_type" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="region_type">
+        <xs:sequence>
+            <xs:element name="max-entries" type="xs:long" minOccurs="1" />
+            <xs:element name="max-idle" type="xs:long" minOccurs="0" />
+            <xs:element name="lifespan" type="xs:long" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:token" />
+    </xs:complexType>
+
+    <xs:complexType name="region-list_type">
+        <xs:sequence>
+            <xs:element name="region" type="region_type" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="isolation-level_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="NONE" />
+            <xs:enumeration value="READ_UNCOMMITTED" />
+            <xs:enumeration value="READ_COMMITTED" />
+            <xs:enumeration value="REPEATABLE_READ" />
+            <xs:enumeration value="SERIALIZABLE" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cache-start_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="LAZY" />
+            <xs:enumeration value="EAGER" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="locking-mode_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="OPTIMISTIC" />
+            <xs:enumeration value="PESSIMISTIC" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="caching-mode_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="ASYNC" />
+            <xs:enumeration value="SYNC" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

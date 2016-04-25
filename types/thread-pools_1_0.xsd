@@ -1,0 +1,26 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:complexType name="abstract-thread-pool_type" abstract="true">
+        <xs:sequence>
+            <xs:element name="max-threads" type="xs:integer" minOccurs="1"/>
+            <xs:element name="keepalive-seconds" type="xs:integer" minOccurs="0"/>
+            <xs:element name="thread-name-pattern" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="name" use="required" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="unbounded-queue-thread-pool_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-thread-pool_type" />
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="thread-pool-list_type">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="unbounded-queue-thread-pool" type="unbounded-queue-thread-pool_type" />
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

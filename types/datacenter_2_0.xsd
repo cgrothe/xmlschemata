@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="common_1_0.xsd" />
+
+    <xs:complexType name="ldap-security_type">
+        <xs:sequence>
+            <xs:element name="url" type="xs:string" />
+            <xs:element name="base-dn" type="xs:string" />
+            <xs:element name="search-dn" type="xs:string" />
+            <xs:element name="search-credential" type="xs:string" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="role-assignment_type">
+        <xs:attribute name="role-name" type="xs:token" />
+        <xs:attribute name="access-group" type="xs:token" />
+    </xs:complexType>
+
+    <xs:complexType name="role-assignment-list_type">
+        <xs:sequence>
+            <xs:element name="role-assignment" type="role-assignment_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="datacenter-environment_type">
+        <xs:choice>
+            <xs:element name="environment-configuration" type="datacenter-environment-configuration_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="environment-configuration-ref" type="environment-configuration-ref_type" maxOccurs="1" minOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="datacenter-environment-configuration_type">
+        <xs:sequence minOccurs="0">
+            <xs:element name="jboss-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jdk6_32-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jdk6_64-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jdk7_32-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jdk7_64-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="active-jdk" type="active-jdk_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="vault-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="jboss-keystore-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="heap-dump-location" type="location_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="additional-vm-args" type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="ldap-security" type="ldap-security_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="http-frontends" type="http-frontend-list_type" minOccurs="0" maxOccurs="1" />
+            <xs:element name="role-assignments" type="role-assignment-list_type" minOccurs="0" maxOccurs="1"  />
+            <xs:element name="port-sets" type="port-set-list_type" minOccurs="0" maxOccurs="1"  />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="datacenter-environment-set_type">
+        <xs:sequence>
+            <xs:element name="live" type="datacenter-environment_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="pre" type="datacenter-environment_type" maxOccurs="1" minOccurs="0" />
+            <xs:element name="stg" type="datacenter-environment_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="int" type="datacenter-environment_type" maxOccurs="1" minOccurs="0" />
+            <xs:element name="dev" type="datacenter-environment_type" maxOccurs="1" minOccurs="0" />
+            <xs:element name="shared-local" type="datacenter-environment_type" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="location_type">
+        <xs:simpleContent>
+            <xs:extension base="xs:string" />
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="http-frontend_type">
+        <xs:simpleContent>
+            <xs:extension base="xs:string" />
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="http-frontend-list_type">
+        <xs:sequence>
+            <xs:element name="http-frontend" type="http-frontend_type" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="binding_type">
+        <xs:simpleContent>
+            <xs:extension base="xs:int">
+                <xs:attribute name="interface" type="xs:token" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="port-set_type">
+        <xs:sequence>
+            <xs:element name="http" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="http2" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="https" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="https2" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="ajp" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="ajp2" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="zabbix" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="remoting" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="messaging" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="debug" type="binding_type" maxOccurs="1" minOccurs="0" />
+            <!-- new ports -->
+            <xs:element name="txn-recovery-environment" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="txn-status-manager" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="management-native" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="management-http" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="management-https" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="jgroups-udp" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="jgroups-tcp" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="jgroups-mping" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="jgroups-mod_cluster-tcp" type="binding_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="jgroups-mod_cluster-tcp-fd" type="binding_type" maxOccurs="1" minOccurs="1" />
+        </xs:sequence>
+        <xs:attribute use="required" name="name" type="xs:string" />
+        <xs:attribute use="required" name="default-interface" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="port-set-list_type">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element name="port-set" type="port-set_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

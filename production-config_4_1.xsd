@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:grothetech:production-config:4" targetNamespace="urn:grothetech:production-config:4" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="types/production_4_1.xsd" />
+    
+    <xs:complexType name="environment_type">
+        <xs:choice maxOccurs="1" minOccurs="1">
+            <xs:element name="environment-configuration" type="production-environment-configuration_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="environment-configuration-ref" type="environment-configuration-ref_type" maxOccurs="1" minOccurs="1" />
+        </xs:choice>
+    </xs:complexType>
+    
+    <xs:complexType name="production-environment-configuration_type">
+      <xs:sequence>
+          <xs:element name="port-ref" type="xs:string" maxOccurs="1" minOccurs="1" />
+          <xs:element name="active-jdk" type="active-jdk_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="memory-settings" type="incomplete-memory-settings_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="additional-vm-args" type="xs:string"  minOccurs="0" maxOccurs="1" />
+          <xs:element name="datasources" type="complete-datasource-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:group ref="common-production-configuration_group" />
+          <xs:element name="processes" type="complete-process-list_type" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="environment-set_type">
+        <xs:sequence>
+            <xs:element name="live" type="environment_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="pre" type="environment_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="stg" type="environment_type" maxOccurs="1" minOccurs="1" />
+            <xs:element name="int" type="environment_type" maxOccurs="1" minOccurs="0" />
+            <xs:element name="dev" type="environment_type" maxOccurs="1" minOccurs="0" />
+            <xs:element name="shared-local" type="environment_type" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="production-configuration_type">
+      <xs:sequence>
+          <xs:element name="app-id" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="active-jdk" type="active-jdk_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="memory-settings" type="complete-memory-settings_type" minOccurs="1" maxOccurs="1" />
+          <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="additional-vm-args" type="xs:string"  minOccurs="0" maxOccurs="1" />
+          <xs:element name="datasources" type="incomplete-datasource-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:group ref="common-production-configuration_group" />
+          <xs:element name="processes" type="incomplete-process-list_type" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="production_type">
+        <xs:sequence>
+            <xs:element name="production-configuration" type="production-configuration_type"  minOccurs="0" maxOccurs="1" />
+            <xs:element name="environments" type="environment-set_type" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="production-config" type="production_type" />
+
+</xs:schema>

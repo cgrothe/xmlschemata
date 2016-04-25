@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:grothetech:datacenter-config:1" targetNamespace="urn:grothetech:datacenter-config:1" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="types/datacenter_1_1.xsd" />
+
+    <xs:element name="local-datacenter-configuration" type="datacenter-environment-configuration_type"  />
+    
+</xs:schema>

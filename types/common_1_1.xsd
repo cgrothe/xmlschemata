@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:complexType name="property-list_type">
+        <xs:sequence>
+            <xs:element name="property" type="property_type" maxOccurs="unbounded" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="property_type">
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="value" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <xs:complexType name="environment-configuration-ref_type">
+        <xs:attribute name="environment" use="required" type="xs:string" />
+    </xs:complexType>
+    
+    <xs:simpleType name="active-jdk_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="jdk6_32"/>
+            <xs:enumeration value="jdk6_64"/>
+            <xs:enumeration value="jdk7_32"/>
+            <xs:enumeration value="jdk7_64"/>
+            <xs:enumeration value="jdk8_32"/>
+            <xs:enumeration value="jdk8_64"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

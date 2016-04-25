@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="common_1_1.xsd" />
+
+    <xs:complexType name="security-domain-list_type">
+        <xs:sequence>
+            <xs:element name="security-domain" type="security-domain_type" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="security-domain_type">
+        <xs:sequence>
+            <xs:element name="authentication" type="login-module-list_type" minOccurs="0" />
+            <xs:element name="authorization" type="policy-module-list_type" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required" />
+        <xs:attribute name="cache-type" type="xs:string" />
+    </xs:complexType>
+
+    <xs:complexType name="abstract-login-module_type" abstract="true">
+        <xs:sequence>
+            <xs:element name="module-options" type="property-list_type" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="code" type="xs:string" use="optional"/>
+        <xs:attribute name="module" type="xs:string" use="optional"/>
+        <xs:attribute name="flag" type="flag_type" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="login-module-list_type">
+        <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
+                <xs:element name="ldap-login-module" type="ldap-login-module_type" />
+                <xs:element name="sec-login-module" type="sec-login-module_type" />
+                <xs:element name="file-login-module" type="file-login-module_type" />
+                <xs:element name="tools-login-module" type="tools-login-module_type" />
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ldap-login-module_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-login-module_type" />
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="sec-login-module_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-login-module_type">
+                <xs:attribute name="role-store" type="role-store_type" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="file-login-module_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-login-module_type">
+                <xs:sequence>
+                    <xs:element name="users" type="user-list_type" minOccurs="0" maxOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="tools-login-module_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-login-module_type" />
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="policy-module-list_type">
+        <xs:sequence>
+            <xs:element name="policy-module" type="policy-module_type" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="policy-module_type">
+        <xs:complexContent>
+            <xs:extension base="abstract-login-module_type" />
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:complexType name="user-list_type">
+        <xs:sequence>
+            <xs:element name="user" type="user_type" maxOccurs="unbounded" minOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="user_type">
+        <xs:attribute name="name" type="xs:token" use="required"/>
+        <xs:attribute name="password" type="xs:token" use="required"/>
+        <xs:attribute name="roles" type="xs:string" use="optional"/>
+    </xs:complexType>
+    
+    <xs:simpleType name="role-store_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="JPA"/>
+            <xs:enumeration value="FILE"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="flag_type">
+        <xs:restriction base="xs:token">
+            <xs:enumeration value="required"/>
+            <xs:enumeration value="requisite"/>
+            <xs:enumeration value="sufficient"/>
+            <xs:enumeration value="optional"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

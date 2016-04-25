@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:grothetech:production-config:1" targetNamespace="urn:grothetech:production-config:1" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:include schemaLocation="types/production_1_0.xsd" />
+
+    <xs:complexType name="local-environment-configuration_type">
+      <xs:sequence>
+          <xs:element name="port-ref" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element name="active-jdk" type="active-jdk_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="memory-settings" type="complete-memory-settings_type"  minOccurs="0" maxOccurs="1" />
+          <xs:element name="system-properties" type="property-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:element name="additional-vm-args" type="xs:string"  minOccurs="0" maxOccurs="1" />
+          <xs:element name="datasources" type="complete-datasource-list_type" minOccurs="0" maxOccurs="1" />
+          <xs:group ref="common-production-configuration_group" />
+          <xs:element name="processes" type="complete-process-list_type" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="local-environment-configuration" type="local-environment-configuration_type" />
+
+</xs:schema>

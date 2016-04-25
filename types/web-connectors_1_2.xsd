@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xs:complexType name="web-connector-list_type">
+        <xs:sequence maxOccurs="1" minOccurs="1">
+            <xs:element name="web-connector" type="web-connector_type" maxOccurs="unbounded" minOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="web-connector_type">
+        <xs:sequence maxOccurs="1" minOccurs="0">
+            <xs:element name="max-threads" type="xs:int" maxOccurs="1" minOccurs="1" />
+            <xs:element name="keepalive-seconds" type="xs:int" maxOccurs="1" minOccurs="0" />
+            <xs:element name="queue-length" type="xs:int" maxOccurs="1" minOccurs="0" />
+            <xs:element name="ssl" type="ssl_type" maxOccurs="1" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="scheme" type="xs:string" use="optional"/>
+        <xs:attribute name="protocol" type="xs:string" use="required"/>
+        <xs:attribute name="port-ref" type="xs:string" use="required"/>
+        <xs:attribute name="enabled" type="xs:boolean" use="optional"/>
+        <xs:attribute name="secured" type="xs:boolean" use="optional"/>
+    </xs:complexType>
+    
+    <xs:complexType name="ssl_type">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="certificate-key-file" type="xs:string" use="optional"/>
+        <xs:attribute name="password" type="xs:string" use="optional" />
+        <xs:attribute name="key-alias" type="xs:string" use="optional" />
+        <xs:attribute name="protocol" type="xs:string" use="optional" />
+    </xs:complexType>
+
+</xs:schema>
